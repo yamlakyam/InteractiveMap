@@ -44,4 +44,4 @@ const Mapper = ({ children, zoom, center }) => {
   );
 };
 
-export default Map;
+export default Mapper;
