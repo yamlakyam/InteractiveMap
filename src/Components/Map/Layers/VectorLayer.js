@@ -17,7 +17,7 @@ const VectorLayer = ({ source, style, zIndex = 0 }) => {
           style
         });
         map.addLayer(vectorLayer);
-        map.addInteraction(new Draw({source:source, type:GeometryType.POLYGON,}))
+        map.addInteraction(new Draw({source:source, type:GeometryType.POLYGON, freehand:true}))
         vectorLayer.setZIndex(zIndex);
         return () => {
           if (map) {
