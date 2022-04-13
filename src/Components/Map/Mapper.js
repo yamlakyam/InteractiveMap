@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
-import "./Maps.css";
+import "./Map.css";
 import MapContext from "../../Contexts/MapContext";
 import * as ol from "ol";
 
-const Map = ({ children, zoom, center }) => {
+const Mapper = ({ children, zoom, center }) => {
   const mapRef = useRef();
   const [map, setMap] = useState(null);
 
