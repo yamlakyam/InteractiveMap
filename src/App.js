@@ -5,7 +5,8 @@
 
 
 import React, { useState } from "react";
-import { Layers, TileLayer, VectorLayer } from "./Components/Map/Layers";
+import { Layers } from "./Components/Map/Layers";
+import { TileLayer, VectorLayer} from "./Components/Map/Layers";
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 import { osm, vector } from "./Components/Map/Source";
 import { fromLonLat, get } from "ol/proj";
@@ -13,6 +14,11 @@ import GeoJSON from "ol/format/GeoJSON";
 import { Controls, FullScreenControl } from "./Components/Map/Controls";
 import Mapper from "./Components/Map/Mapper";
 import mapConfig from "./config.json";
+// import Draw from 'ol/interaction/Draw';
+// import Map from 'ol/Map';
+// import View from 'ol/View';
+// import {OSM, Vector as VectorSource} from 'ol/source';
+// import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 
 
 let styles = {
@@ -29,6 +35,14 @@ let styles = {
 
 const geojsonObject = mapConfig.geojsonObject;
 const geojsonObject2 = mapConfig.geojsonObject2;
+
+// const raster = new TileLayer({
+//   source: new OSM(),
+// });
+// const source = new VectorSource({wrapX: false});
+// const vector = new VectorLayer({
+//   source: source,
+// });
 
 function App() {
   const [center, setCenter] = useState([-94.9065, 38.9884]);

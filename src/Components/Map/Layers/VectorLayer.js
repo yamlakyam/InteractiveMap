@@ -2,6 +2,9 @@ import React from 'react'
 import MapContext from '../../../Contexts/MapContext'
 import OLVectorLayer from 'ol/layer/Vector'
 import { useEffect,useContext } from 'react'
+import Draw from 'ol/interaction/Draw';
+import { Polygon } from 'ol/geom';
+import GeometryType from 'ol/geom/GeometryType';
 
 const VectorLayer = ({ source, style, zIndex = 0 }) => {
 
@@ -14,6 +17,7 @@ const VectorLayer = ({ source, style, zIndex = 0 }) => {
           style
         });
         map.addLayer(vectorLayer);
+        map.addInteraction(new Draw({source:source, type:GeometryType.POLYGON,}))
         vectorLayer.setZIndex(zIndex);
         return () => {
           if (map) {
