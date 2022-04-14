@@ -6,6 +6,7 @@ import Draw from 'ol/interaction/Draw';
 import { Polygon } from "ol/geom";
 import {OSM, Vector as VectorSource} from 'ol/source';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
+import GeometryType from 'ol/geom/GeometryType';
 
 const source = new VectorSource({wrapX: false});
 const vector = new VectorLayer({
@@ -54,11 +55,19 @@ const Mapper = ({ children, zoom, center }) => {
   //       freehand: true })
   //   );
   // }, [])
-  
+
+  const handleMapClick = evt => {
+		console.log("map",map)
+		console.log("evt",evt)
+		console.log("evt pixel",evt.pixel)
+		console.log("map getLayers()",map.getLayers())
+		// console.log("map getFeaturesAtPixel",map.getFeaturesAtPixel(evt.pixel))
+
+	}
 
   return (
     <MapContext.Provider value={{ map }}>
-      <div ref={mapRef} className="ol-map">
+      <div ref={mapRef} className="ol-map" onClick={handleMapClick}>
         {children}
       </div>
     </MapContext.Provider>
