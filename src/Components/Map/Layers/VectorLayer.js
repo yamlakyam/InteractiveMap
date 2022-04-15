@@ -17,7 +17,15 @@ const VectorLayer = ({ source, style, zIndex = 0 }) => {
           style
         });
         map.addLayer(vectorLayer);
-        map.addInteraction(new Draw({source:source, type:GeometryType.POLYGON, freehand:false}))
+        var draw = new Draw({
+          source: source,
+          type: GeometryType.POLYGON,
+          freehand: false,
+        });
+        map.addInteraction(draw);
+        draw.on('drawend', function(e){
+          console.log("extent",e.feature.getGeometry().getExtent())
+        });
         vectorLayer.setZIndex(zIndex);
         return () => {
           if (map) {
