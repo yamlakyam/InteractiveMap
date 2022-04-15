@@ -3,10 +3,9 @@
 //   Map, Layers, Overlay, Util
 // } from "react-openlayers"
 
-
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Layers } from "./Components/Map/Layers";
-import { TileLayer, VectorLayer} from "./Components/Map/Layers";
+import { TileLayer, VectorLayer } from "./Components/Map/Layers";
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 import { osm, vector } from "./Components/Map/Source";
 import { fromLonLat, get } from "ol/proj";
@@ -14,12 +13,14 @@ import GeoJSON from "ol/format/GeoJSON";
 import { Controls, FullScreenControl } from "./Components/Map/Controls";
 import Mapper from "./Components/Map/Mapper";
 import mapConfig from "./config.json";
+import { click } from "ol/events/condition";
 // import Draw from 'ol/interaction/Draw';
 // import Map from 'ol/Map';
 // import View from 'ol/View';
 // import {OSM, Vector as VectorSource} from 'ol/source';
 // import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
-
+import { InteractionsContext } from "./Contexts/InteractionsContext";
+import { InteractionsProvider } from "./Contexts/InteractionsContext";
 
 let styles = {
   MultiPolygon: new Style({
@@ -50,53 +51,64 @@ function App() {
   const [showLayer1, setShowLayer1] = useState(true);
   const [showLayer2, setShowLayer2] = useState(true);
 
+  const clearState = useContext(InteractionsContext);
+  const clearButtonClickHandler = () => {
+    console.log(clearState,"clearState")
+    // clearState.setPolygonClearState(true);
+  };
+
   return (
-    <div>
-      <Mapper center={fromLonLat(center)} zoom={zoom}>
-        <Layers>
-          <TileLayer source={osm()} zIndex={0} />
-          {showLayer1 && (
-            <VectorLayer
-              source={vector({
-                features: new GeoJSON().readFeatures(geojsonObject, {
-                  featureProjection: get("EPSG:3857"),
-                }),
-              })}
-              style={styles.MultiPolygon}
-            />
-          )}
-          {showLayer2 && (
-            <VectorLayer
-              source={vector({
-                features: new GeoJSON().readFeatures(geojsonObject2, {
-                  featureProjection: get("EPSG:3857"),
-                }),
-              })}
-              style={styles.MultiPolygon}
-            />
-          )}
-        </Layers>
-        <Controls>
-          <FullScreenControl />
-        </Controls>
-      </Mapper>
+    <InteractionsProvider>
       <div>
-        <input
-          type="checkbox"
-          checked={showLayer1}
-          onChange={(event) => setShowLayer1(event.target.checked)}
-        />{" "}
-        Johnson County
+        <Mapper center={fromLonLat(center)} zoom={zoom}>
+          <Layers>
+            <TileLayer source={osm()} zIndex={0} />
+            {showLayer1 && (
+              <VectorLayer
+                source={vector({
+                  features: new GeoJSON().readFeatures(geojsonObject, {
+                    featureProjection: get("EPSG:3857"),
+                  }),
+                })}
+                style={styles.MultiPolygon}
+              />
+            )}
+            {showLayer2 && (
+              <VectorLayer
+                source={vector({
+                  features: new GeoJSON().readFeatures(geojsonObject2, {
+                    featureProjection: get("EPSG:3857"),
+                  }),
+                })}
+                style={styles.MultiPolygon}
+              />
+            )}
+          </Layers>
+          <Controls>
+            <FullScreenControl />
+          </Controls>
+        </Mapper>
+        <div>
+          <button onClick={clearButtonClickHandler}>Clear</button>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={showLayer1}
+            onChange={(event) => setShowLayer1(event.target.checked)}
+          />{" "}
+          Johnson County
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={showLayer2}
+            onChange={(event) => setShowLayer2(event.target.checked)}
+          />{" "}
+          Wyandotte County
+        </div>
       </div>
-      <div>
-        <input
-          type="checkbox"
-          checked={showLayer2}
-          onChange={(event) => setShowLayer2(event.target.checked)}
-        />{" "}
-        Wyandotte County
-      </div>
-    </div>
+    </InteractionsProvider>
 
     // <div className="App">
     //   <Map
