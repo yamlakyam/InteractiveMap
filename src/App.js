@@ -50,52 +50,56 @@ function App() {
   const [showLayer2, setShowLayer2] = useState(true);
 
   return (
+    <div>
+      <Mapper center={fromLonLat(center)} zoom={zoom}>
+        <Layers>
+          <TileLayer source={osm()} zIndex={0} />
+          {showLayer1 ? (
+            <VectorLayer
+              source={vector({
+                features: new GeoJSON().readFeatures(geojsonObject, {
+                  featureProjection: get("EPSG:3857"),
+                }),
+              })}
+              style={styles.MultiPolygon}
+            />
+          ) : (
+            <VectorLayer source={vector({})} />
+          )}
+          {showLayer2 ? (
+            <VectorLayer
+              source={vector({
+                features: new GeoJSON().readFeatures(geojsonObject2, {
+                  featureProjection: get("EPSG:3857"),
+                }),
+              })}
+              style={styles.MultiPolygon}
+            />
+          ) : (
+            <VectorLayer source={vector({})} />
+          )}
+        </Layers>
+        <Controls>
+          <FullScreenControl />
+        </Controls>
+      </Mapper>
       <div>
-        <Mapper center={fromLonLat(center)} zoom={zoom}>
-          <Layers>
-            <TileLayer source={osm()} zIndex={0} />
-            {showLayer1 && (
-              <VectorLayer
-                source={vector({
-                  features: new GeoJSON().readFeatures(geojsonObject, {
-                    featureProjection: get("EPSG:3857"),
-                  }),
-                })}
-                style={styles.MultiPolygon}
-              />
-            )}
-            {showLayer2 && (
-              <VectorLayer
-                source={vector({
-                  features: new GeoJSON().readFeatures(geojsonObject2, {
-                    featureProjection: get("EPSG:3857"),
-                  }),
-                })}
-                style={styles.MultiPolygon}
-              />
-            )}
-          </Layers>
-          <Controls>
-            <FullScreenControl />
-          </Controls>
-        </Mapper>
-        <div>
-          <input
-            type="checkbox"
-            checked={showLayer1}
-            onChange={(event) => setShowLayer1(event.target.checked)}
-          />{" "}
-          Johnson County
-        </div>
-        <div>
-          <input
-            type="checkbox"
-            checked={showLayer2}
-            onChange={(event) => setShowLayer2(event.target.checked)}
-          />{" "}
-          Wyandotte County
-        </div>
+        <input
+          type="checkbox"
+          checked={showLayer1}
+          onChange={(event) => setShowLayer1(event.target.checked)}
+        />{" "}
+        Johnson County
       </div>
+      <div>
+        <input
+          type="checkbox"
+          checked={showLayer2}
+          onChange={(event) => setShowLayer2(event.target.checked)}
+        />{" "}
+        Wyandotte County
+      </div>
+    </div>
 
     // <div className="App">
     //   <Map
