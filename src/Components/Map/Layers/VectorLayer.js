@@ -5,13 +5,10 @@ import { useEffect,useContext } from 'react'
 import Draw from 'ol/interaction/Draw';
 import { Polygon } from 'ol/geom';
 import GeometryType from 'ol/geom/GeometryType';
-import {InteractionsContext} from "../../../Contexts/InteractionsContext"
 
 const VectorLayer = ({ source, style, zIndex = 0 }) => {
 
     const { map } = useContext(MapContext);
-    const clearState = useContext(InteractionsContext);
-
     useEffect(() => {
         if (!map) return;
         let vectorLayer = new OLVectorLayer({
@@ -29,13 +26,12 @@ const VectorLayer = ({ source, style, zIndex = 0 }) => {
           console.log("extent", e.feature.getGeometry().getExtent());
         });
 
-        if (clearState.polygonClearState) {
-          console.log("cleared", clearState);
-          map.removeInteraction(draw);
-        } else {
-          console.log("cleared", clearState);
-        }
-
+        draw.on("drawstart", function(e){
+          console.log("on draw start called")
+          console.log("map layers", map.getLayers())
+          console.log("source",source)
+          source.clear()
+        })
         vectorLayer.setZIndex(zIndex);
         return () => {
           if (map) {

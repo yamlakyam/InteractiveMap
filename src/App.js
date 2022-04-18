@@ -19,8 +19,6 @@ import { click } from "ol/events/condition";
 // import View from 'ol/View';
 // import {OSM, Vector as VectorSource} from 'ol/source';
 // import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
-import { InteractionsContext } from "./Contexts/InteractionsContext";
-import { InteractionsProvider } from "./Contexts/InteractionsContext";
 
 let styles = {
   MultiPolygon: new Style({
@@ -51,14 +49,7 @@ function App() {
   const [showLayer1, setShowLayer1] = useState(true);
   const [showLayer2, setShowLayer2] = useState(true);
 
-  const clearState = useContext(InteractionsContext);
-  const clearButtonClickHandler = () => {
-    console.log(clearState,"clearState")
-    // clearState.setPolygonClearState(true);
-  };
-
   return (
-    <InteractionsProvider>
       <div>
         <Mapper center={fromLonLat(center)} zoom={zoom}>
           <Layers>
@@ -89,9 +80,6 @@ function App() {
           </Controls>
         </Mapper>
         <div>
-          <button onClick={clearButtonClickHandler}>Clear</button>
-        </div>
-        <div>
           <input
             type="checkbox"
             checked={showLayer1}
@@ -108,7 +96,6 @@ function App() {
           Wyandotte County
         </div>
       </div>
-    </InteractionsProvider>
 
     // <div className="App">
     //   <Map
