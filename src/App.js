@@ -10,7 +10,7 @@ import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 import { osm, vector } from "./Components/Map/Source";
 import { fromLonLat, get } from "ol/proj";
 import GeoJSON from "ol/format/GeoJSON";
-import { Controls, FullScreenControl } from "./Components/Map/Controls";
+import { Controls, FullScreenControl,DrawingControl } from "./Components/Map/Controls";
 import Mapper from "./Components/Map/Mapper";
 import mapConfig from "./config.json";
 import { click } from "ol/events/condition";
@@ -54,7 +54,7 @@ function App() {
       <Mapper center={fromLonLat(center)} zoom={zoom}>
         <Layers>
           <TileLayer source={osm()} zIndex={0} />
-          {showLayer1 ? (
+          {/* {showLayer1 ? (
             <VectorLayer
               source={vector({
                 features: new GeoJSON().readFeatures(geojsonObject, {
@@ -63,10 +63,10 @@ function App() {
               })}
               style={styles.MultiPolygon}
             />
-          ) : (
-            <VectorLayer source={vector({})} />
-          )}
-          {showLayer2 ? (
+          ) : ( */}
+          {/* <VectorLayer source={vector({})} /> */}
+          {/* )} */}
+          {/* {showLayer2 ? (
             <VectorLayer
               source={vector({
                 features: new GeoJSON().readFeatures(geojsonObject2, {
@@ -75,12 +75,15 @@ function App() {
               })}
               style={styles.MultiPolygon}
             />
-          ) : (
-            <VectorLayer source={vector({})} />
-          )}
+          ) : ( */}
+          <VectorLayer source={vector({})}>
+            {/* <DrawingControl source={vector({})} /> */}
+          </VectorLayer>
+          {/* )} */}
         </Layers>
         <Controls>
           <FullScreenControl />
+          <DrawingControl source={vector({})} />
         </Controls>
       </Mapper>
       <div>
